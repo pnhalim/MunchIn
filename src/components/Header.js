@@ -4,13 +4,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import FeedIcon from '@mui/icons-material/FoodBank';
 import ReserveIcon from '@mui/icons-material/Book';
 import NetworkIcon from '@mui/icons-material/Fastfood';
-import MessageIcon from '@mui/icons-material/Sms';
+import MessageIcon from '@mui/icons-material/EmojiFoodBeverage';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HeaderOption from './HeaderOption';
 
+import Profile from '../img/profile-pic.jpg'
+
 function Header() {
   return (
-    <div className='pt-2 shadow md:flex justify-between sticky top-0 bg-white'>
+    <div className='z-50 pt-2 shadow md:flex justify-between sticky top-0 bg-white'>
         {/* Left Header - only appears on md*/}
         <div className='hidden md:flex h-10'> 
         <img className='h-10 ml-6' src={Logo} alt="logo" />
@@ -33,6 +35,7 @@ function Header() {
           <HeaderOption Icon={ReserveIcon} title='Reservations' />
           <HeaderOption Icon={MessageIcon} title='The Tea' />
           <HeaderOption Icon={NotificationsIcon} title='Notifs' />
+          <HeaderOption avatar={Profile} title='Me' />
         </div>
     </div>
   )
