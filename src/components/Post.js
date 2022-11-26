@@ -6,7 +6,7 @@ import CommentIcon from '@mui/icons-material/CommentOutlined';
 import RepostIcon from '@mui/icons-material/Repeat';
 import SendIcon from '@mui/icons-material/Send';
 
-function Post({ name, description, message }) {
+function Post({ name, description, message, photoUrl }) {
   const formattedMessage = message.split('--NEWLINE--');
 
   return (
@@ -24,7 +24,7 @@ function Post({ name, description, message }) {
           </div>
         </div>
       </div>
-      {formattedMessage.map(str => <p className='px-1 py-1.5 text-neutral-700'>{str}</p>)}
+      {formattedMessage.map((str, index) => <p key={index} className='px-1 py-1.5 text-neutral-700'>{str}</p>)}
       <div className="grid justify-items-stretch grid-flow-col border-t py-1 mt-1">
         <Button className='rounded-md hover:bg-neutral-200 cursor-pointer transition ease-in' Icon={StarIcon} title='Like' color='gray' />
         <Button className='rounded-md hover:bg-neutral-200 cursor-pointer transition ease-in' Icon={CommentIcon} title='Comment' color='gray' />

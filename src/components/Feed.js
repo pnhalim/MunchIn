@@ -8,7 +8,7 @@ import ReviewIcon from '@mui/icons-material/Reviews';
 import Button from './Button';
 import Post from './Post'
 import { db } from './firebase';
-import { collection, getDocs, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, onSnapshot, query, orderBy, addDoc, serverTimestamp } from "firebase/firestore";
 
 
 
@@ -17,6 +17,8 @@ function Feed() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    /*
+    // single time data collection
     getDocs(collection(db, "posts"))
       .then(snapshot => {
         setPosts(snapshot.docs.map(doc => (
@@ -29,6 +31,17 @@ function Feed() {
       .catch(err => {
         console.log(err.message);
       })
+    */
+    // real time data collection
+    const q = query(collection(db, "posts"), orderBy('timestamp', 'desc'))
+    onSnapshot(q, (snapshot) => {
+      setPosts(snapshot.docs.map(doc => (
+        {
+          id: doc.id,
+          ...doc.data(), // spread out objects in doc.data()
+        }
+      )))
+    })
   }, []);
   
   const sendPost = e => {
@@ -42,7 +55,7 @@ function Feed() {
       timestamp: serverTimestamp(),
     })
 
-    console.log(input);
+    setInput('');
   };
 
   return (
@@ -65,7 +78,7 @@ function Feed() {
       </div>
       { /* Posts */ }
       {posts.map( post => (
-        <Post name={post.name} description={post.description} message={post.message} />
+        <Post key={post.id} name={post.name} description={post.description} message={post.message} photoUrl={post.photoURL} />
       ))}
     </div>
   )
