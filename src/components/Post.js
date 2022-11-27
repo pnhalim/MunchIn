@@ -6,13 +6,13 @@ import CommentIcon from '@mui/icons-material/CommentOutlined';
 import RepostIcon from '@mui/icons-material/Repeat';
 import SendIcon from '@mui/icons-material/Send';
 
-function Post({ name, description, message, photoUrl }) {
+function Post({ name, description, message, photoURL }) {
   const formattedMessage = message.split('--NEWLINE--');
 
   return (
     <div className='rounded-md bg-white p-4 pb-0.5 shadow w-[36rem]'>
       <div className="flex items-center">
-        <Avatar className='!h-12 !w-12'/>
+        <Avatar className='!h-12 !w-12' src={photoURL} />
         <div className='px-3 cursor-pointer'>
           <h1 className='font-semibold text-neutral-700 hover:text-sky-600 hover:underline cursor-pointer'>{name}</h1>
           <p className='text-sm text-neutral-400'>{description}</p>

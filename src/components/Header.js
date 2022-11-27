@@ -7,10 +7,20 @@ import NetworkIcon from '@mui/icons-material/Fastfood';
 import MessageIcon from '@mui/icons-material/EmojiFoodBeverage';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import HeaderOption from './HeaderOption';
-
-import Profile from '../img/profile-pic.jpg'
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../features/userSlice';
+import { signOut } from 'firebase/auth'
+import { auth } from './firebase';
 
 function Header() {
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  const logoutOfApp = () => {
+    dispatch(logout());
+    signOut(auth);
+  };
+
   return (
     <div className='z-50 pt-2 shadow md:flex justify-between sticky top-0 bg-white'>
         {/* Left Header - only appears on md*/}
@@ -35,7 +45,7 @@ function Header() {
           <HeaderOption Icon={ReserveIcon} title='Reservations' />
           <HeaderOption Icon={MessageIcon} title='The Tea' />
           <HeaderOption Icon={NotificationsIcon} title='Notifs' />
-          <HeaderOption avatar={Profile} title='Me' />
+          <HeaderOption onClick={logoutOfApp} avatar={user.photoURL} title='Sign Out' />
         </div>
     </div>
   )

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar } from "@mui/material"
-import Profile from '../img/profile-pic.jpg'
 import PhotoIcon from '@mui/icons-material/InsertPhoto';
 import PlayIcon from '@mui/icons-material/SmartDisplay';
 import RestaurantIcon from '@mui/icons-material/Campaign';
@@ -9,10 +8,13 @@ import Button from './Button';
 import Post from './Post'
 import { db } from './firebase';
 import { collection, onSnapshot, query, orderBy, addDoc, serverTimestamp } from "firebase/firestore";
+import { selectUser } from '../features/userSlice';
+import { useSelector } from 'react-redux';
 
 
 
 function Feed() {
+  const user = useSelector(selectUser);
   const [input, setInput] = useState('');
   const [posts, setPosts] = useState([]);
 
@@ -48,10 +50,10 @@ function Feed() {
     e.preventDefault(); // prevents from refreshing page
     
     addDoc(collection(db, "posts"), {
-      name: 'Patrick Halim',
-      description: 'Foodie | Creator of MunchIn',
+      name: user.displayName || 'Anonymous',
+      description: user.description || 'Decentralized international activist and hacktivist collective and movement',
       message: input,
-      photoURL: '',
+      photoURL: user.photoURL || '',
       timestamp: serverTimestamp(),
     })
 
@@ -63,7 +65,7 @@ function Feed() {
       { /* Input Field */ }
       <div className='rounded-md bg-white shadow py-1 w-[36rem]'>
         <div className='flex pt-2 pl-4 items-center'>
-          <Avatar className='!h-12 !w-12' src={Profile} />
+          <Avatar className='!h-12 !w-12' src={user.photoURL} />
           <form action="" className="flex grow ml-3 mr-4">
             <input value={input} onChange={e => setInput(e.target.value)} className='hover:bg-neutral-100 transition ease-in cursor-pointer grow border rounded-full border-neutral-400 py-2.5 px-5' type='text' placeholder='Start a post'/>
             <button className='hidden' onClick={sendPost} type='submit'>Send</button>
@@ -78,7 +80,7 @@ function Feed() {
       </div>
       { /* Posts */ }
       {posts.map( post => (
-        <Post key={post.id} name={post.name} description={post.description} message={post.message} photoUrl={post.photoURL} />
+        <Post key={post.id} name={post.name} description={post.description} message={post.message} photoURL={post.photoURL} />
       ))}
     </div>
   )

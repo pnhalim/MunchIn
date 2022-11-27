@@ -1,4 +1,7 @@
-== Firebase SDK setup ==
+# Firebase 
+
+## SDK setup
+
 ```
 npm install firebase
 ```
@@ -36,3 +39,29 @@ material-ui design library
 ```
 npm install @mui/material @emotion/react @emotion/styled
 ````
+
+## Usage
+
+Using Firebase v9. See ./components/firebase.js for initialization details. Using Firebase auth for user authentication and firestore for database storage.
+
+See this amazing tutorial: https://www.youtube.com/watch?v=9zdvmgGsww0&list=PL4cUxeGkcC9jERUGvbudErNCeSZHWUVlb
+
+
+# Redux 
+
+The 'state' of the storage content is in ./app/store.js. For each of the objects in the store, you can create a reducer for it by creating a slice. 
+
+The slice for the user's data is in userSlice.js. It defines functions for the user to call to update the store data, and also returns a reducer for the data. 
+
+To update the store data: 
+```
+import { useDispatch } from 'react-redux';
+import { your_reducer_function } from '../features/userSlice'
+```
+```
+const dispatch = useDispatch();
+```
+```
+dispatch(your_reducer_function(parameters_to_set_new_data))
+```
+
