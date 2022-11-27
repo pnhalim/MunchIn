@@ -45,7 +45,7 @@ function Header() {
           <HeaderOption Icon={ReserveIcon} title='Reservations' />
           <HeaderOption Icon={MessageIcon} title='The Tea' />
           <HeaderOption Icon={NotificationsIcon} title='Notifs' />
-          <HeaderOption onClick={logoutOfApp} avatar={user.photoURL} title='Sign Out' />
+          <HeaderOption onClick={logoutOfApp} avatar={user.photoURL} displayName={user.displayName} title='Sign Out' />
         </div>
     </div>
   )

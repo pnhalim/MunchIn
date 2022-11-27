@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import munchinLongLogo from '../img/munchin-logo-long.png'
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 import { createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { setDoc, getDoc, doc } from 'firebase/firestore'
 import InputBox from './InputBox'
 import { useDispatch } from 'react-redux';
 import { login } from '../features/userSlice'
@@ -19,6 +20,20 @@ function Login() {
   // auth
   const dispatch = useDispatch();
 
+  const getJoke = new Promise((resolve, reject) => {
+    fetch(`https://api.api-ninjas.com/v1/dadjokes?limit=1`, {
+      method: 'GET',
+      headers: {'X-Api-Key': process.env.DAD_JOKES_API_KEY},
+    })
+      .then(res => res.json())
+      .then(data => {
+        resolve(data[0].joke);
+      })
+      .catch(err => {
+        console.log(err)
+        reject('MunchIn User');
+      })
+  });
 
   const register = (e) => {
     e.preventDefault();
@@ -39,27 +54,50 @@ function Login() {
       setError('Please enter profile pic URL (from google images!)');
       return;
     }
-    // profile
+    // get joke for description
+    getJoke
+    .then(joke => {
+      createFirebaseUser(joke);
+    })
+    .catch(err => {
+      createFirebaseUser(err);
+    });
+  };
+  const createFirebaseUser = (desc) => {
+    // firebase create user
+    let userDocRef = null;
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         updateProfile(userCredential.user, {
           displayName: name, 
           photoURL: profilePic,
+          description: "hello World",
         })
-          .then(() => {
-            dispatch(login({
-              email: userCredential.user.email, 
-              uid: userCredential.user.uid,
-              displayName: name, 
-              photoURL: profilePic,
-            }));
-          });
+        .then(() => {
+          // update user profile
+          userDocRef = doc(db, 'users', userCredential.user.uid);
+          setDoc(userDocRef, { 
+            name: userCredential.user.displayName,
+            photoURL: userCredential.user.photoURL,
+            description: desc,
+        }, { merge: true }); 
+        })
+        .then(() => {
+          // send to redux
+          dispatch(login({
+            email: userCredential.user.email, 
+            uid: userCredential.user.uid,
+            displayName: name, 
+            photoURL: profilePic,
+            description: desc,
+          }))
+        })
       })
-      .catch((error) => {
-        setError('A user already exists with this email');
+      .catch(() => {
+        setError('Invalid email or email already in use');
       })
-  };
+  }
   const loginToApp = (e) => {
     e.preventDefault();
     if (!email) {
@@ -70,20 +108,31 @@ function Login() {
       setError('Please enter a password');
       return;
     }
+    signInFirebaseUser();
+  }
+  const signInFirebaseUser = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         // Signed in
+        // get user profile information
+        let profile = {};
+        getDoc(doc(db, 'users', userCredential.user.uid))
+        .then(snapshot => {
+          console.log(snapshot)
+          profile = {...snapshot}
+        })
         dispatch(login({
           email: userCredential.user.email, 
           uid: userCredential.user.uid,
-          displayName: userCredential.user.displayName, 
-          photoURL: userCredential.user.photoURL,
+          displayName: profile.name, 
+          photoURL: profile.photoURL,
+          description: profile.description,
         }));
       })
       .catch((error) => {
         setError('Invalid email or password');
       })
-  };
+  }
   const submitForm = (e) => (registered ? loginToApp(e) : register(e));
 
   return (
@@ -117,11 +166,11 @@ function Login() {
       </div>
       <div className='flex space-x-6 mb-5 place-self-center'>
         <span className='text-sm cursor-default font-semibold'>MunchIn by Patrick Halim, 2022</span>
-        <a className='text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" href="https://github.com/pnhalim/linkedin-clone">GitHub</a>
-        <a className='text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" href='https://www.linkedin.com/in/patrick-halim/'>LinkedIn</a>
-        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" href='https://github.com/CLAWS-UMICH/HOSHI-2021-2022-Release'>Other</a>
-        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" href='https://www.youtube.com/watch?v=DjproJZUcOI&t=77s'>Random</a>
-        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" href='https://main--timely-medovik-b279fe.netlify.app/'>Links</a>
+        <a className='text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" rel="noreferrer" href="https://github.com/pnhalim/linkedin-clone">GitHub</a>
+        <a className='text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" rel="noreferrer" href='https://www.linkedin.com/in/patrick-halim/'>LinkedIn</a>
+        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" rel="noreferrer" href='https://github.com/CLAWS-UMICH/HOSHI-2021-2022-Release'>Other</a>
+        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" rel="noreferrer" href='https://www.youtube.com/watch?v=DjproJZUcOI&t=77s'>Random</a>
+        <a className='hidden sm:inline text-sm cursor-pointer hover:underline text-neutral-500' target="_blank" rel="noreferrer" href='https://main--timely-medovik-b279fe.netlify.app/'>Links</a>
       </div>
     </div>
   )

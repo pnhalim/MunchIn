@@ -6,8 +6,9 @@ import Feed from './components/Feed';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
-import { auth } from './components/firebase'
+import { auth, db } from './components/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 import { login, logout } from './features/userSlice'
 
 function App() {
@@ -18,20 +19,27 @@ function App() {
     onAuthStateChanged(auth, userCredentials => {
       if (userCredentials) {
         // the user is logged in
-        dispatch(login({
+        // get user profile information
+        let profile = {};
+        getDoc(doc(db, 'users', userCredentials.uid))
+        .then(snapshot => {
+          profile = snapshot.data();
+          // add info to redux
+          dispatch(login({
           email: userCredentials.email, 
           uid: userCredentials.uid,
-          displayName: userCredentials.displayName, 
-          photoURL: userCredentials.photoURL,
+          displayName: profile.name, 
+          photoURL: profile.photoURL,
+          description: profile.description,
         }));
+        }) 
       }
       else {
         // the user is logged out
         dispatch(logout());
       }
     })
-  }, [])
-  
+  }, [dispatch])
   
   return (
     <div className="App font-default">
