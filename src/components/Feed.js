@@ -63,11 +63,11 @@ function Feed() {
   return (
     <div className='flex flex-col space-y-3'>
       { /* Input Field */ }
-      <div className='rounded-md bg-white shadow py-1 w-[36rem]'>
+      <div className='rounded-md bg-white shadow py-1 w-screen max-w-[33rem] min-[820px]:w-[36rem]'>
         <div className='flex pt-2 pl-4 items-center'>
           <Avatar className='!h-12 !w-12' src={user.photoURL} />
           <form action="" className="flex grow ml-3 mr-4">
-            <input value={input} onChange={e => setInput(e.target.value)} className='hover:bg-neutral-100 transition ease-in cursor-pointer grow border rounded-full border-neutral-400 py-2.5 px-5' type='text' placeholder='Start a post'/>
+            <input value={input} onChange={e => setInput(e.target.value)} className='hover:bg-neutral-100 transition ease-in cursor-pointer grow border rounded-full border-neutral-400 py-2.5 px-5 w-full' type='text' placeholder='Start a post'/>
             <button className='hidden' onClick={sendPost} type='submit'>Send</button>
           </form>
         </div>
@@ -78,10 +78,11 @@ function Feed() {
           <Button Icon={ReviewIcon} title='Write Review' color='#e16745' />
         </div>
       </div>
+      
       { /* Posts */ }
       <FlipMove>
         {posts.map( post => (
-          <Post key={post.id} name={post.name} description={post.description} message={post.message} photoURL={post.photoURL} />
+          <Post key={post.id} name={post.name} description={post.description} message={post.message} photoURL={post.photoURL} likes={Math.floor(Math.random() * 1000) + 2}/>
         ))}
       </FlipMove>
     </div>

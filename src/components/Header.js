@@ -22,13 +22,14 @@ function Header() {
   };
 
   return (
-    <div className='z-50 pt-2 shadow md:flex justify-between sticky top-0 bg-white'>
+    <div className='flex justify-center z-50 pt-2 shadow w-screen sticky top-0 bg-white'>
+      <div className='max-w-6xl grow md:flex justify-between'>
         {/* Left Header - only appears on md*/}
         <div className='hidden md:flex h-10'> 
-        <img className='h-10 ml-6' src={Logo} alt="logo" />
+        <img className='h-10 ml-6 xl:ml-3' src={Logo} alt="logo" />
             <div className='ml-2 mt-0.5 focus-within:outline outline-2 outline-neutral-900 bg-background py-0.5 rounded-md'>
               <SearchIcon className='opacity-60 scale-90 ml-3 mr-1 mb-1' />  
-              <input className='bg-transparent focus:outline-none w-64 pt-1.5 pb-1' type='text' placeholder='Search' />
+              <input className='bg-transparent focus:outline-none lg:w-64 pt-1.5 pb-1' type='text' placeholder='Search' />
             </div>
         </div>  
         {/* Right Header */}
@@ -42,11 +43,12 @@ function Header() {
           {/* Options */}
           <HeaderOption Icon={FeedIcon} title='Feed' />
           <HeaderOption Icon={NetworkIcon} title='My Network' />
-          <HeaderOption Icon={ReserveIcon} title='Reservations' />
+          <div className='hidden sm:flex justify-around'><HeaderOption Icon={ReserveIcon} title='Reservations' /></div>
           <HeaderOption Icon={MessageIcon} title='The Tea' />
           <HeaderOption Icon={NotificationsIcon} title='Notifs' />
           <HeaderOption onClick={logoutOfApp} avatar={user.photoURL} displayName={user.displayName} title='Sign Out' />
         </div>
+      </div>
     </div>
   )
 }

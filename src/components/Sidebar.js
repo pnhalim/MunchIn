@@ -19,17 +19,19 @@ function Sidebar() {
     )
 
   return (
-    <div className='w-56'>
+    <div className='w-full max-w-[33rem] md:w-56'>
         { /* Top */ }
-        <div className='flex flex-col items-center bg-white grow shadow rounded-md overflow-hidden'>
-            <div className='relative h-32'>
-                <img className='object-cover opacity-90 w-56 h-20' src={BackgroundImg} alt='' />
-                <Avatar className='border-white border-2 !h-16 !w-16 absolute bottom-10 left-20 scale-125' src={user.photoURL} />
+        <div className='w-full flex flex-col items-center bg-white grow shadow rounded-md overflow-hidden mb-3'>
+            <div className='relative w-full h-32'>
+                <img className='object-cover opacity-90 w-full md:w-56 h-20' src={BackgroundImg} alt='' />
+                <div className='absolute bottom-5 left-1/2 md:left-20'>
+                    <Avatar className='border-white border-2 !h-16 !w-16 scale-125 -left-8 md:left-0' src={user.photoURL} />
+                </div>
             </div>
             <h1 className="font-semibold text-lg">{user.displayName}</h1>
-            <h2 className="text-sm text-neutral-500 text-center mx-3">{user.description}</h2>
+            <h2 className="text-sm text-neutral-500 text-center mx-3 mb-3">{user.description}</h2>
 
-            <div className="w-56 border-t border-bg py-2 mt-3">
+            <div className="hidden md:block w-56 border-t border-bg py-2 ">
                 <div className='flex justify-between py-1 px-3 hover:bg-neutral-100 cursor-pointer'>
                     <p className="text-sm font-semibold text-neutral-500">Who's viewed your profile</p>
                     <p className="text-sm text-primary font-semibold">114</p>
@@ -41,7 +43,7 @@ function Sidebar() {
             </div>
         </div>
         { /* Bottom */ }
-        <div className='mt-3 bg-white grow shadow rounded-md overflow-hidden sticky top-[5.5rem]'>
+        <div className='hidden md:block mt-3 bg-white grow shadow rounded-md overflow-hidden sticky top-[5.5rem]'>
             <div className='my-3'> 
                 <h1 className='text-sm px-3 py-1'>Recent</h1>
                 {recentItem('Making MunchIn', 'https://github.com/pnhalim/linkedin-clone')}

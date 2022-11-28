@@ -43,11 +43,11 @@ function App() {
   }, [dispatch])
   
   return (
-    <div className="App font-default">
+    <div className="App font-default ">
       {!user ? <Login /> : ( 
-      <div>
+      <div className='bg-main-background w-screen flex flex-col items-center'>
         <Header />
-        <div className='bg-main-background w-full flex justify-around pt-7'>
+        <div className='md:max-w-screen-md lg:max-w-6xl bg-main-background w-full flex flex-col items-center md:items-start md:flex-row justify-evenly pt-7'>
           <Sidebar />
           <Feed />
           <Widgets />
