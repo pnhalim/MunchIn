@@ -46,6 +46,9 @@ Using Firebase v9. See ./components/firebase.js for initialization details. Usin
 
 See this amazing tutorial: https://www.youtube.com/watch?v=9zdvmgGsww0&list=PL4cUxeGkcC9jERUGvbudErNCeSZHWUVlb
 
+## Data Storage
+
+Posts are stored in a collection called posts. User profiles are stored in a collection called users. The users collection is used in addition to the Firebase Auth data since Auth will only store certain amounts of data. The document id in the users collection corresponds to each user's uid from Firebase Auth.
 
 # Redux 
 
@@ -65,3 +68,18 @@ const dispatch = useDispatch();
 dispatch(your_reducer_function(parameters_to_set_new_data))
 ```
 
+# API call
+
+The description for each user is randomly set when the register using a REST API call. Here is the API: https://api-ninjas.com/api/dadjokes. 
+
+Actually, I switched to anotehr API because I think I got blocked from this one...oops I was calling it too much with buggy code. Anyways, I'm using this one now: https://icanhazdadjoke.com/api
+
+You can see it being used in `Login.js`
+
+# Animations
+
+Using React Flip Move for animating new posts.
+https://github.com/joshwcomeau/react-flip-move
+
+Note, Flip move is no longer being maintained and is giving me console errors, so in the future, I will use this one.
+https://github.com/aholachek/react-flip-toolkit 

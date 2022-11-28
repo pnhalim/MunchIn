@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { Avatar } from "@mui/material"
 import Button from './Button';
 import StarIcon from '@mui/icons-material/StarOutlineOutlined';
@@ -6,11 +6,11 @@ import CommentIcon from '@mui/icons-material/CommentOutlined';
 import RepostIcon from '@mui/icons-material/Repeat';
 import SendIcon from '@mui/icons-material/Send';
 
-function Post({ name, description, message, photoURL }) {
+const Post = forwardRef(({ name, description, message, photoURL }, ref) => {
   const formattedMessage = message.split('--NEWLINE--');
 
   return (
-    <div className='rounded-md bg-white p-4 pb-0.5 shadow w-[36rem]'>
+    <div ref={ref} className='rounded-md bg-white p-4 pb-0.5 shadow w-[36rem] mb-3'>
       <div className="flex items-center">
         <Avatar className='!h-12 !w-12' src={photoURL} />
         <div className='px-3 cursor-pointer'>
@@ -33,6 +33,6 @@ function Post({ name, description, message, photoURL }) {
       </div>
     </div>
   )
-}
+})
 
 export default Post

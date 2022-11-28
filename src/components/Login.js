@@ -20,21 +20,6 @@ function Login() {
   // auth
   const dispatch = useDispatch();
 
-  const getJoke = new Promise((resolve, reject) => {
-    fetch(`https://api.api-ninjas.com/v1/dadjokes?limit=1`, {
-      method: 'GET',
-      headers: {'X-Api-Key': process.env.DAD_JOKES_API_KEY},
-    })
-      .then(res => res.json())
-      .then(data => {
-        resolve(data[0].joke);
-      })
-      .catch(err => {
-        console.log(err)
-        reject('MunchIn User');
-      })
-  });
-
   const register = (e) => {
     e.preventDefault();
     // error handling
@@ -55,6 +40,23 @@ function Login() {
       return;
     }
     // get joke for description
+    const getJoke = new Promise((resolve, reject) => {
+      fetch(`https://icanhazdadjoke.com/`, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'MunchIn: A LinkedIn Clone (https://github.com/pnhalim/linkedin-clone)', 
+          'Accept': 'application/json',
+        },
+      })
+        .then(res => res.json())
+        .then(data => {
+          resolve(data.joke);
+        })
+        .catch(err => {
+          console.log(err)
+          reject('MunchIn User');
+        })
+    });
     getJoke
     .then(joke => {
       createFirebaseUser(joke);
@@ -118,7 +120,6 @@ function Login() {
         let profile = {};
         getDoc(doc(db, 'users', userCredential.user.uid))
         .then(snapshot => {
-          console.log(snapshot)
           profile = {...snapshot}
         })
         dispatch(login({

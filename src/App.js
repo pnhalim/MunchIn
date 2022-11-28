@@ -6,6 +6,7 @@ import Feed from './components/Feed';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
+import Widgets from './components/Widgets';
 import { auth, db } from './components/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
@@ -48,9 +49,8 @@ function App() {
         <Header />
         <div className='bg-main-background w-full flex justify-around pt-7'>
           <Sidebar />
-          {/* Feed */}
           <Feed />
-          {/* Widgets */}
+          <Widgets />
         </div>
       </div>
       )}

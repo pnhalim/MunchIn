@@ -11,8 +11,8 @@ import { selectUser } from '../features/userSlice';
 function Sidebar() {
     const user = useSelector(selectUser);
 
-    const recentItem = (topic) => (
-        <div className='flex py-1 px-3 opacity-60 hover:opacity-100 hover:bg-neutral-100 cursor-pointer transition ease-in-out'>
+    const recentItem = (topic, link = '') => (
+        <div onClick={() => window.open(link)} className='flex py-1 px-3 opacity-60 hover:opacity-100 hover:bg-neutral-100 cursor-pointer transition ease-in-out'>
             <RestaurantIcon className='pr-1' />
             <p className="ml-1 mt-1 text-sm font-semibold">{topic}</p>
         </div>
@@ -44,9 +44,12 @@ function Sidebar() {
         <div className='mt-3 bg-white grow shadow rounded-md overflow-hidden sticky top-[5.5rem]'>
             <div className='my-3'> 
                 <h1 className='text-sm px-3 py-1'>Recent</h1>
-                {recentItem('Making MunchIn')}
-                {recentItem('Thanksgiving Dinner')}
-                {recentItem('Ann Arbor Restaurants List')}
+                {recentItem('Making MunchIn', 'https://github.com/pnhalim/linkedin-clone')}
+                {recentItem('Learning React JS', 'https://www.youtube.com/watch?v=j942wKiXFu8&list=PL4cUxeGkcC9gZD-Tvwfod2gaISzfRiP9d')}
+                {recentItem('Making an Image Gallery', 'https://github.com/pnhalim/image-gallery')}
+                {recentItem('Learning Tailwind CSS', 'https://www.youtube.com/watch?v=bxmDnn7lrnk&list=PL4cUxeGkcC9gpXORlEHjc5bgnIi5HEGhw')}
+                {recentItem('Learning HTML/CSS/JS', 'https://www.w3schools.com/tags/default.asp')}
+
             </div>
         </div>
     </div>
