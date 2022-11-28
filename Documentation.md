@@ -83,3 +83,19 @@ https://github.com/joshwcomeau/react-flip-move
 
 Note, Flip move is no longer being maintained and is giving me console errors, so in the future, I will use this one.
 https://github.com/aholachek/react-flip-toolkit 
+
+# Deploying
+
+```
+firebase login
+firebase init
+```
+Select Hosting > Use an existing project > Project Name 
+public directory: build
+single-page app: yes
+```
+yarn run build (or npm run build)
+```
+```
+firebase deploy
+```

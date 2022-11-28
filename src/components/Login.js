@@ -97,7 +97,7 @@ function Login() {
         })
       })
       .catch(() => {
-        setError('Invalid email or email already in use');
+        setError('An error occured: check image is a valid URL, email is not alredy being used, password at least 4 characters');
       })
   }
   const loginToApp = (e) => {

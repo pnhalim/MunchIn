@@ -16,8 +16,18 @@ const Post = forwardRef(({ id, name, description, message, photoURL, user_id }, 
   const [numLikes, setNumLikes] = useState(0);
 
   useEffect(() => {
-    // set initial comment state
-    getPostData();
+    // get post data to set initial comment state
+
+    // TODO this would be better to do with snapshot instead 
+    //    of getDocs because the value can change on the server
+    getDoc(doc(db, 'posts', id)) 
+    .then(snapshot => {
+      let post = snapshot.data();
+      if (post[user_id] != null) {
+        setLikeState(post[user_id]);
+      }
+      setNumLikes(post['numLikes'] || 0)
+    })
   }, [])
   
   const likePost = () => {
@@ -31,18 +41,6 @@ const Post = forwardRef(({ id, name, description, message, photoURL, user_id }, 
 
     setLikeState(!likeState);
     setNumLikes(numLikes + (!likeState ? 1 : -1));
-  }
-  const getPostData = () => {
-    // TODO this would be better to do with snapshot instead 
-    //    of getDocs because the value can change on the server
-    getDoc(doc(db, 'posts', id)) 
-    .then(snapshot => {
-      let post = snapshot.data();
-      if (post[user_id] != null) {
-        setLikeState(post[user_id]);
-      }
-      setNumLikes(post['numLikes'] || 0)
-    })
   }
 
 
